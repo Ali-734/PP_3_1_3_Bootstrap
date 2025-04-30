@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактировать пользователя</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input, select, button {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+            margin-top: 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        select[disabled] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Редактировать пользователя</h2>
+    <form th:action="@{/admin/edit}" method="post" th:object="${person}">
+        <input type="hidden" th:field="*{id}">
+        <input type="text" th:field="*{username}" placeholder="Имя пользователя" required>
+        <div th:errors="*{username}" class="error"></div>
+        <input type="password" th:field="*{password}" placeholder="Пароль (оставьте пустым, чтобы не менять)">
+        <div th:errors="*{password}" class="error"></div>
+        <input type="number" th:field="*{year_birth}" placeholder="Год рождения" required>
+        <div th:errors="*{year_birth}" class="error"></div>
+        <select name="role" th:disabled="${isEditingSelf}" required>
+            <option value="" disabled>Выберите роль</option>
+            <option value="ROLE_USER" th:selected="${#lists.contains(person.roles, 'ROLE_USER')}">ROLE_USER</option>
+            <option value="ROLE_ADMIN" th:selected="${#lists.contains(person.roles, 'ROLE_ADMIN')}">ROLE_ADMIN</option>
+        </select>
+        <input type="hidden" name="role" th:value="${person.roles[0].name}" th:if="${isEditingSelf}"/>
+        <button type="submit">Сохранить</button>
+    </form>
+    <a th:href="@{/admin/panel}">Назад к панели</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Админская панель</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    a, button {
+      color: #4CAF50;
+      text-decoration: none;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+    }
+    a:hover, button:hover {
+      text-decoration: underline;
+    }
+    button.delete {
+      color: red;
+    }
+    .create-link {
+      display: block;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .logout {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .logout form {
+      display: inline;
+    }
+    .logout button {
+      background: none;
+      border: none;
+      color: #4CAF50;
+      cursor: pointer;
+      padding: 0;
+    }
+    .logout button:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Админская панель</h2>
+  <a th:href="@{/admin/create}" class="create-link">Создать нового пользователя</a>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Имя пользователя</th>
+      <th>Год рождения</th>
+      <th>Роль</th>
+      <th>Действия</th>
+    </tr>
+    <tr th:each="person : ${people}">
+      <td th:text="${person.id}"></td>
+      <td th:text="${person.username}"></td>
+      <td th:text="${person.year_birth}"></td>
+      <td th:text="${person.roles} ? ${person.roles[0].name} : 'Нет роли'"></td>
+      <td>
+        <a th:href="@{/admin/edit(id=${person.id})}">Редактировать</a>
+        <a th:href="@{/admin/delete(id=${person.id})}" class="delete">Удалить</a>
+      </td>
+    </tr>
+  </table>
+  <div class="logout">
+    <form th:action="@{/logout}" method="post">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <button type="submit">Выйти</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

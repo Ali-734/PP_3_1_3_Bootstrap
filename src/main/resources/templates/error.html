@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ошибка</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 400px;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+        }
+        .error {
+            color: red;
+            font-size: 1.1em;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            display: block;
+            margin-top: 20px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Произошла ошибка</h2>
+    <div class="error">
+        <p th:if="${status}" th:text="'Код ошибки: ' + ${status}"></p>
+        <p th:if="${error}" th:text="'Сообщение: ' + ${error}"></p>
+        <p th:unless="${error}">Неизвестная ошибка</p>
+    </div>
+    <a th:href="@{/auth/login}">Вернуться на страницу входа</a>
+</div>
+</body>
+</html>
